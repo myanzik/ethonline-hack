@@ -5,6 +5,7 @@ export interface Merchant {
     address: string;
     phone: string;
     businessType: string;
+    walletAddress: string;
     isActive: boolean;
     createdAt: string;
 }

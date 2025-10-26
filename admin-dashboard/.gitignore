@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# wallet data (contains private keys - should never be committed)
+/data/wallets.json
+/data/
+*.wallet
+*.key

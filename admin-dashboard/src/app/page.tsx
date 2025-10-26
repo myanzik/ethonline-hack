@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/Button';
 import { getMerchants, getBeneficiaries, getChannels } from '@/utils/dataUtils';
 import { Users, UserCheck, Network, Plus, TrendingUp, DollarSign } from 'lucide-react';
 import Link from 'next/link';
+import YellowNetworkDemo from '@/components/YellowNetworkDemo';
 
 export default function DashboardPage() {
   const merchants = getMerchants();
@@ -86,6 +87,9 @@ export default function DashboardPage() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Yellow Network Demo */}
+          <YellowNetworkDemo />
+
           {/* Quick Actions */}
           <Card>
             <CardHeader>
@@ -202,6 +206,7 @@ export default function DashboardPage() {
             </div>
           </CardContent>
         </Card>
+
       </div>
     </div>
   );

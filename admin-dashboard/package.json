@@ -6,11 +6,16 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "generate-wallets": "node scripts/generateWallets.js",
+    "show-wallets": "node scripts/accessWallets.js list",
+    "export-wallets": "node scripts/accessWallets.js export"
   },
   "dependencies": {
+    "@erc7824/nitrolite": "0.3.0",
     "@headlessui/react": "^2.2.9",
     "clsx": "^2.1.1",
+    "ethers": "^6.15.0",
     "lucide-react": "^0.548.0",
     "next": "16.0.0",
     "react": "19.2.0",

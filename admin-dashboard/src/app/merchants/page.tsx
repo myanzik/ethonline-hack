@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { getMerchants, formatDate } from '@/utils/dataUtils';
 import { Merchant } from '@/types';
-import { Search, MapPin, Phone, Mail, Building, Eye } from 'lucide-react';
+import { Search, MapPin, Phone, Mail, Building, Eye, Wallet, Copy } from 'lucide-react';
 
 export default function MerchantsPage() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -16,8 +16,13 @@ export default function MerchantsPage() {
     const filteredMerchants = merchants.filter(merchant =>
         merchant.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         merchant.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        merchant.businessType.toLowerCase().includes(searchTerm.toLowerCase())
+        merchant.businessType.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        merchant.walletAddress.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+    const copyToClipboard = (text: string) => {
+        navigator.clipboard.writeText(text);
+    };
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -32,7 +37,7 @@ export default function MerchantsPage() {
                         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                         <Input
                             type="text"
-                            placeholder="Search merchants by name, email, or business type..."
+                            placeholder="Search merchants by name, email, business type, or wallet address..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                             className="pl-10"
@@ -48,8 +53,8 @@ export default function MerchantsPage() {
                                     <CardTitle className="text-lg">{merchant.name}</CardTitle>
                                     <span
                                         className={`px-2 py-1 rounded-full text-xs font-medium ${merchant.isActive
-                                                ? 'bg-green-100 text-green-800'
-                                                : 'bg-red-100 text-red-800'
+                                            ? 'bg-green-100 text-green-800'
+                                            : 'bg-red-100 text-red-800'
                                             }`}
                                     >
                                         {merchant.isActive ? 'Active' : 'Inactive'}
@@ -73,6 +78,12 @@ export default function MerchantsPage() {
                                     <div className="flex items-start text-sm text-gray-600">
                                         <MapPin className="w-4 h-4 mr-2 mt-0.5 flex-shrink-0" />
                                         <span className="line-clamp-2">{merchant.address}</span>
+                                    </div>
+                                    <div className="flex items-start text-sm text-gray-600">
+                                        <Wallet className="w-4 h-4 mr-2 mt-0.5 flex-shrink-0" />
+                                        <span className="font-mono text-xs break-all">
+                                            {merchant.walletAddress.slice(0, 10)}...{merchant.walletAddress.slice(-8)}
+                                        </span>
                                     </div>
                                     <div className="text-xs text-gray-500">
                                         Created: {formatDate(merchant.createdAt)}
@@ -133,6 +144,22 @@ export default function MerchantsPage() {
                                     <div>
                                         <h4 className="font-medium text-gray-900">Address</h4>
                                         <p className="text-sm text-gray-600">{selectedMerchant.address}</p>
+                                    </div>
+
+                                    <div>
+                                        <h4 className="font-medium text-gray-900">Wallet Address</h4>
+                                        <div className="flex items-center space-x-2">
+                                            <p className="text-sm text-gray-600 font-mono break-all">
+                                                {selectedMerchant.walletAddress}
+                                            </p>
+                                            <Button
+                                                variant="ghost"
+                                                size="sm"
+                                                onClick={() => copyToClipboard(selectedMerchant.walletAddress)}
+                                            >
+                                                <Copy className="w-4 h-4" />
+                                            </Button>
+                                        </div>
                                     </div>
 
                                     <div>
