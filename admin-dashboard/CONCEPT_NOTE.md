@@ -3,7 +3,7 @@
 
 ### Executive Summary
 
-The Token Distribution Channel Management System is a comprehensive admin dashboard designed to facilitate the creation and management of distribution channels between merchants and beneficiaries. The system enables administrators to distribute tokens to beneficiaries, who can then use these tokens to make transactions with any merchant within their assigned channel.
+The Token Distribution Channel Management System is a comprehensive admin dashboard designed to facilitate the creation and management of distribution channels between merchants and beneficiaries.
 
 ### 1. Project Overview
 
