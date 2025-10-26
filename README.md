@@ -4,6 +4,115 @@
 
 BlinkAid is a disaster-resilient application designed to facilitate the creation and management of distribution channels between merchants and beneficiaries during humanitarian crises and natural disasters.
 
+
+## Getting Started
+
+### Prerequisites
+- Node.js (v18 or higher)
+- npm or pnpm package manager
+
+### Repository Structure
+```
+ethonline-hack/
+├── admin-dashboard/          # Web-based admin interface
+│   ├── src/
+│   │   ├── app/             # Next.js pages and routing
+│   │   ├── components/      # React components
+│   │   ├── services/        # API services and integrations
+│   │   └── types/           # TypeScript type definitions
+│   └── package.json
+├── sms-simulator/           # SMS simulation interface
+│   ├── src/
+│   │   ├── app/             # Next.js pages
+│   │   ├── components/      # React components
+│   │   └── data/            # Mock data and types
+│   └── package.json
+├── yellow-app-test/         # Yellow Network integration tests
+└── README.md
+```
+
+### Running the Applications
+
+#### 1. Admin Dashboard
+The admin dashboard provides a web interface for managing merchants, beneficiaries, and distribution channels.
+
+```bash
+# Navigate to admin dashboard directory
+cd admin-dashboard
+
+# Install dependencies
+npm install
+# or
+pnpm install
+
+# Start the development server
+npm run dev
+# or
+pnpm dev
+
+# The dashboard will be available at http://localhost:3000
+```
+
+**Features:**
+- Merchant management
+- Beneficiary management
+- Channel creation and management
+- Real-time transaction monitoring
+- Yellow Network integration testing
+
+#### 2. SMS Simulator
+The SMS simulator provides a testing interface to simulate SMS-based transactions and communications.
+
+```bash
+# Navigate to SMS simulator directory
+cd sms-simulator
+
+# Install dependencies
+npm install
+# or
+pnpm install
+
+# Start the development server
+npm run dev
+# or
+pnpm dev
+
+# The simulator will be available at http://localhost:3000
+```
+
+**Features:**
+- SMS message simulation
+- Contact list management
+- Transaction flow testing
+- Mock data for testing scenarios
+
+#### 3. Yellow Network Integration
+The Yellow Network integration provides testing capabilities for state channel functionality.
+
+```bash
+# Navigate to Yellow Network test directory
+cd yellow-app-test
+
+# Install dependencies
+npm install
+
+# Run the test application
+node app.js
+```
+
+**Features:**
+- State channel testing
+- ClearNode integration
+- Payment session management
+- Network connectivity testing
+
+### Development Notes
+- Both the admin dashboard and SMS simulator run on port 3000 by default
+- Make sure to run them on different ports if testing simultaneously
+- The Yellow Network integration requires proper network configuration
+- Mock data is provided for testing purposes in both applications
+
+
 ### 1. Project Overview
 
 #### 1.1 Problem Statement
@@ -67,29 +176,6 @@ A disaster-resilient aid distribution system that leverages **Yellow Network sta
 │  └─────────────────────────────────────────────────────┘   │
 └─────────────────────────────────────────────────────────────┘
 ```
-
-#### 2.2 User Roles
-
-1. **Administrator**
-   - Creates and manages distribution channels
-   - Distributes tokens to beneficiaries via SMS
-   - Monitors system activity and transaction flows
-   - Manages merchant and beneficiary registrations
-   - Oversees custodial wallet management
-
-2. **Merchant**
-   - Accepts token payments from beneficiaries via SMS
-   - Provides goods/services within assigned channels
-   - Receives instant settlement through Yellow Network state channels
-   - Reports transaction activity through SMS interface
-   - Manages inventory for disaster relief supplies
-
-3. **Beneficiary (Disaster Victim)**
-   - Receives tokens through SMS notifications
-   - Conducts transactions via simple text messages
-   - Purchases essential goods from merchants using SMS
-   - Accesses emergency services within assigned channels
-   - Uses phone number as wallet identifier (no complex setup required)
 
 ### 3. System Workflow
 
@@ -279,61 +365,3 @@ A disaster-resilient aid distribution system that leverages **Yellow Network sta
 - **Instant Setup**: Wallets are created automatically when phone numbers are registered
 - **Secure Backend**: All private keys are securely managed by the system
 - **Easy Recovery**: Wallet access can be restored through SMS verification
-
-#### 8.4 Disaster-Resilient Architecture
-- **Distributed Infrastructure**: System can operate across multiple geographic locations
-- **Redundancy**: Multiple SMS gateways ensure message delivery
-- **State Channel Networks**: Yellow Network provides built-in redundancy
-- **Offline Sync**: Transactions are synchronized when connectivity is restored
-- **Emergency Protocols**: Special procedures for extreme disaster scenarios
-
-### 9. Disaster Response Security Considerations
-
-#### 9.1 Emergency Data Protection
-- **Secure Phone Number Storage**: Encrypted storage of beneficiary contact information
-- **SMS Encryption**: End-to-end encryption for sensitive transaction data
-- **Access Control**: Role-based access for emergency administrators
-- **Disaster-Specific Protocols**: Special security measures during crisis situations
-
-#### 9.2 Crisis Token Security
-- **Instant Validation**: Real-time transaction verification via Yellow Network
-- **Fraud Prevention**: Advanced monitoring for suspicious activity during emergencies
-- **Emergency Limits**: Transaction limits to prevent abuse during crisis
-- **Audit Trails**: Complete transaction history for accountability and transparency
-
-#### 9.3 Disaster-Resilient System Security
-- **Distributed Security**: Multiple security layers across different geographic locations
-- **SMS Security**: Secure SMS gateway integration with authentication
-- **State Channel Security**: Yellow Network's built-in security features
-- **Emergency Protocols**: Special security procedures for extreme disaster scenarios
-
-### 10. Disaster Response Scalability and Future Enhancements
-
-#### 10.1 Emergency Response Improvements
-- **Real-time Crisis Monitoring**: Advanced analytics for disaster response effectiveness
-- **Multi-language SMS Support**: Support for local languages in disaster zones
-- **Voice-based Transactions**: Voice commands for beneficiaries with limited literacy
-- **Satellite Communication**: Integration with satellite networks for extreme scenarios
-
-#### 10.2 Long-term Disaster Resilience Vision
-- **Global Disaster Network**: Worldwide network of emergency response channels
-- **AI-Powered Crisis Management**: Machine learning for optimal resource allocation
-- **Integration with Emergency Services**: Direct connection to government disaster response
-- **Predictive Aid Distribution**: AI-driven prediction of disaster needs and resource allocation
-
-
-### 11. Disaster Response Technical Specifications
-
-#### 11.1 Emergency System Requirements
-- **Yellow Network Integration**: State channel support for instant transactions
-- **SMS Gateway**: Reliable SMS service provider integration
-- **Custodial Wallet Infrastructure**: Secure wallet management system
-- **Disaster-Resilient Servers**: Distributed infrastructure for crisis scenarios
-- **Multi-language Support**: Localization for disaster-affected regions
-
-#### 11.2 Emergency Deployment Requirements
-- **Rapid Setup**: System can be deployed within hours of disaster
-- **Minimal Infrastructure**: Works with basic internet connectivity
-- **SMS Coverage**: Reliable SMS service in disaster zones
-- **Phone Number Database**: Access to affected population contact information
-- **Merchant Network**: Pre-registered local merchants in disaster-prone areas
