@@ -219,4 +219,4 @@ graph TB
     E --> N
 ```
 
-These diagrams provide a comprehensive visual representation of the Token Distribution Channel Management System, showing the architecture, workflows, and interactions between different components.
+These diagrams provide a comprehensive visual representation of the BlinkAid Disaster-Resilient Token Distribution System, showing the architecture, workflows, and interactions between different components.

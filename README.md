@@ -1,8 +1,8 @@
-# Aid Token Distribution Channel Management System
+# BlinkAid - Disaster-Resilient Token Distribution System
 
 ### Summary
 
-The Token Distribution Channel Management System is a applicaiton designed to facilitate the creation and management of distribution channels between merchants and beneficiaries.
+BlinkAid is a disaster-resilient application designed to facilitate the creation and management of distribution channels between merchants and beneficiaries during humanitarian crises and natural disasters.
 
 ### 1. Project Overview
 

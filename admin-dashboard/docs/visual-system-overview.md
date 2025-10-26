@@ -4,7 +4,7 @@
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│                           TOKEN DISTRIBUTION SYSTEM                            │
+│                        BLINKAID DISASTER-RESILIENT SYSTEM                      │
 ├─────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                 │
 │  ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐             │
@@ -264,4 +264,4 @@
 └─────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-This visual overview provides a comprehensive understanding of the Token Distribution Channel Management System, showing the architecture, workflows, and use cases in an easy-to-understand format.
+This visual overview provides a comprehensive understanding of the BlinkAid Disaster-Resilient Token Distribution System, showing the architecture, workflows, and use cases in an easy-to-understand format.

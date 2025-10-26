@@ -19,8 +19,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Admin Dashboard",
-  description: "Admin dashboard for managing merchants, beneficiaries, and channels",
+  title: "BlinkAid Admin Dashboard",
+  description: "Disaster-resilient admin dashboard for managing merchants, beneficiaries, and channels with SMS-based token distribution",
 };
 
 export default function RootLayout({

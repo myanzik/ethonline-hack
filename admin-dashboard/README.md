@@ -1,6 +1,6 @@
-# Admin Dashboard
+# BlinkAid Admin Dashboard
 
-A simple Next.js admin dashboard for managing merchants, beneficiaries, and distribution channels with token distribution functionality.
+A disaster-resilient Next.js admin dashboard for managing merchants, beneficiaries, and distribution channels with SMS-based token distribution functionality during humanitarian crises.
 
 ## Features
 
