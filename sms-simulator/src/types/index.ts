@@ -15,6 +15,13 @@ export interface Message {
     timestamp: Date;
     isFromUser: boolean;
     status: 'sent' | 'delivered' | 'read';
+    type?: 'text' | 'transaction';
+    transactionData?: {
+        amount: number;
+        currency: string;
+        transactionId?: string;
+        status: 'pending' | 'completed' | 'failed';
+    };
 }
 
 export interface Conversation {

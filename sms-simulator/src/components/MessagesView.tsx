@@ -2,7 +2,7 @@
 
 import { Contact, Message } from '@/types';
 import { mockMessages } from '@/data/mockData';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface MessagesViewProps {
     contact: Contact;
@@ -11,9 +11,13 @@ interface MessagesViewProps {
 
 export default function MessagesView({ contact, onBack }: MessagesViewProps) {
     const [newMessage, setNewMessage] = useState('');
+    const [messages, setMessages] = useState<Message[]>([]);
 
     // Get messages for this contact
-    const messages = mockMessages.filter(msg => msg.contactId === contact.id);
+    useEffect(() => {
+        const contactMessages = mockMessages.filter(msg => msg.contactId === contact.id);
+        setMessages(contactMessages);
+    }, [contact.id]);
 
     const formatTime = (date: Date) => {
         return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -30,8 +34,69 @@ export default function MessagesView({ contact, onBack }: MessagesViewProps) {
 
     const handleSendMessage = () => {
         if (newMessage.trim()) {
-            // In a real app, this would send the message to the backend
-            console.log('Sending message:', newMessage);
+            const messageText = newMessage.trim();
+
+            // Check if it's a transaction message
+            const transactionMatch = messageText.match(/^PAY\s+(\d+)\s+(USDC|USD)\s+(\d+)$/i);
+
+            if (transactionMatch) {
+                const [, amount, currency, transactionId] = transactionMatch;
+
+                // Create transaction message
+                const transactionMessage: Message = {
+                    id: Date.now().toString(),
+                    contactId: contact.id,
+                    content: messageText,
+                    timestamp: new Date(),
+                    isFromUser: true,
+                    status: 'sent',
+                    type: 'transaction',
+                    transactionData: {
+                        amount: parseInt(amount),
+                        currency: currency.toUpperCase(),
+                        transactionId: `TXN-${transactionId}`,
+                        status: 'pending',
+                    },
+                };
+
+                // Add user message
+                setMessages(prev => [...prev, transactionMessage]);
+
+                // Simulate merchant response after 2 seconds
+                setTimeout(() => {
+                    const merchantResponse: Message = {
+                        id: (Date.now() + 1).toString(),
+                        contactId: contact.id,
+                        content: `${amount} ${currency.toUpperCase()} RECEIVED`,
+                        timestamp: new Date(),
+                        isFromUser: false,
+                        status: 'read',
+                        type: 'transaction',
+                        transactionData: {
+                            amount: parseInt(amount),
+                            currency: currency.toUpperCase(),
+                            transactionId: `TXN-${transactionId}`,
+                            status: 'completed',
+                        },
+                    };
+
+                    setMessages(prev => [...prev, merchantResponse]);
+                }, 2000);
+            } else {
+                // Regular text message
+                const textMessage: Message = {
+                    id: Date.now().toString(),
+                    contactId: contact.id,
+                    content: messageText,
+                    timestamp: new Date(),
+                    isFromUser: true,
+                    status: 'sent',
+                    type: 'text',
+                };
+
+                setMessages(prev => [...prev, textMessage]);
+            }
+
             setNewMessage('');
         }
     };
@@ -107,12 +172,36 @@ export default function MessagesView({ contact, onBack }: MessagesViewProps) {
                             className={`flex ${message.isFromUser ? 'justify-end' : 'justify-start'}`}
                         >
                             <div
-                                className={`max-w-xs lg:max-w-md px-4 py-2 rounded-2xl ${message.isFromUser
-                                        ? 'bg-blue-500 text-white'
-                                        : 'bg-white text-gray-900 border border-gray-200'
+                                className={`max-w-xs lg:max-w-md px-4 py-2 rounded-2xl ${message.type === 'transaction'
+                                        ? message.isFromUser
+                                            ? 'bg-green-500 text-white'
+                                            : 'bg-green-100 text-green-800 border border-green-200'
+                                        : message.isFromUser
+                                            ? 'bg-blue-500 text-white'
+                                            : 'bg-white text-gray-900 border border-gray-200'
                                     }`}
                             >
-                                <p className="text-sm">{message.content}</p>
+                                <p className="text-sm font-medium">{message.content}</p>
+
+                                {message.type === 'transaction' && message.transactionData && (
+                                    <div className="mt-2 p-2 bg-black bg-opacity-10 rounded-lg">
+                                        <div className="flex justify-between items-center text-xs">
+                                            <span>Amount: {message.transactionData.amount} {message.transactionData.currency}</span>
+                                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${message.transactionData.status === 'completed'
+                                                    ? 'bg-green-200 text-green-800'
+                                                    : message.transactionData.status === 'pending'
+                                                        ? 'bg-yellow-200 text-yellow-800'
+                                                        : 'bg-red-200 text-red-800'
+                                                }`}>
+                                                {message.transactionData.status.toUpperCase()}
+                                            </span>
+                                        </div>
+                                        <div className="text-xs mt-1 opacity-75">
+                                            ID: {message.transactionData.transactionId}
+                                        </div>
+                                    </div>
+                                )}
+
                                 <div className="flex items-center justify-end mt-1">
                                     <span
                                         className={`text-xs ${message.isFromUser ? 'text-blue-100' : 'text-gray-500'
@@ -171,7 +260,7 @@ export default function MessagesView({ contact, onBack }: MessagesViewProps) {
                             value={newMessage}
                             onChange={(e) => setNewMessage(e.target.value)}
                             onKeyPress={handleKeyPress}
-                            placeholder="Type a message..."
+                            placeholder="Type a message or 'PAY 500 USDC 1234567890' for transaction..."
                             className="w-full px-4 py-3 border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         />
                     </div>

@@ -3,174 +3,181 @@ import { Contact, Message } from '@/types';
 export const mockContacts: Contact[] = [
     {
         id: '1',
-        name: 'Alice',
+        name: 'Alice (Beneficiary)',
         phoneNumber: '+1 (555) 123-4567',
-        lastMessage: 'Hey, how are you doing?',
-        lastMessageTime: new Date(Date.now() - 1000 * 60 * 30), // 30 minutes ago
-        unreadCount: 2,
-    },
-    {
-        id: '2',
-        name: 'Bob',
-        phoneNumber: '+1 (555) 987-6543',
-        lastMessage: 'Thanks for the help!',
-        lastMessageTime: new Date(Date.now() - 1000 * 60 * 60 * 2), // 2 hours ago
+        lastMessage: 'PAY 500 USDC 9234923423',
+        lastMessageTime: new Date(Date.now() - 1000 * 60 * 5), // 5 minutes ago
         unreadCount: 0,
     },
     {
-        id: '3',
-        name: 'Merchant',
+        id: '2',
+        name: 'Green Grocery Store',
         phoneNumber: '+1 (555) 987-6543',
-        lastMessage: 'Thanks for the help!',
-        lastMessageTime: new Date(Date.now() - 1000 * 60 * 60 * 2), // 2 hours ago
+        lastMessage: '500 USDC RECEIVED',
+        lastMessageTime: new Date(Date.now() - 1000 * 60 * 3), // 3 minutes ago
+        unreadCount: 1,
+    },
+    {
+        id: '4',
+        name: 'Health Center',
+        phoneNumber: '+1 (555) 321-0987',
+        lastMessage: '200 USDC RECEIVED',
+        lastMessageTime: new Date(Date.now() - 1000 * 60 * 60 * 1), // 1 hour ago
+        unreadCount: 0,
+    },
+    {
+        id: '5',
+        name: 'Emergency Relief',
+        phoneNumber: '+1 (555) 999-8888',
+        lastMessage: 'Aid tokens distributed to your wallet',
+        lastMessageTime: new Date(Date.now() - 1000 * 60 * 60 * 24), // 1 day ago
         unreadCount: 0,
     },
 ];
 
 export const mockMessages: Message[] = [
-    // Messages for John Doe (id: '1')
+    // Messages for Alice (Beneficiary) - id: '1'
     {
         id: '1',
         contactId: '1',
-        content: 'Hey, how are you doing?',
-        timestamp: new Date(Date.now() - 1000 * 60 * 30),
+        content: 'Welcome to BlinkAid! Your emergency aid tokens have been distributed.',
+        timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2),
         isFromUser: false,
         status: 'read',
+        type: 'text',
     },
     {
         id: '2',
         contactId: '1',
-        content: 'I\'m doing great! How about you?',
-        timestamp: new Date(Date.now() - 1000 * 60 * 25),
-        isFromUser: true,
+        content: 'You have 1000 USDC available for emergency purchases',
+        timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2 + 1000 * 30),
+        isFromUser: false,
         status: 'read',
+        type: 'text',
     },
     {
         id: '3',
         contactId: '1',
-        content: 'Pretty good! Just working on some projects',
-        timestamp: new Date(Date.now() - 1000 * 60 * 20),
-        isFromUser: false,
-        status: 'read',
+        content: 'PAY 500 USDC 9234923423',
+        timestamp: new Date(Date.now() - 1000 * 60 * 5),
+        isFromUser: true,
+        status: 'delivered',
+        type: 'transaction'
     },
+
     {
         id: '4',
         contactId: '1',
-        content: 'That sounds interesting! What kind of projects?',
-        timestamp: new Date(Date.now() - 1000 * 60 * 15),
-        isFromUser: true,
-        status: 'delivered',
-    },
-    {
-        id: '5',
-        contactId: '1',
-        content: 'I\'m building a mobile app for messaging',
-        timestamp: new Date(Date.now() - 1000 * 60 * 10),
+        content: '500 USDC Payment Sent',
+        timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2 + 1000 * 30),
         isFromUser: false,
         status: 'read',
-    },
-    {
-        id: '6',
-        contactId: '1',
-        content: 'That\'s awesome! I\'d love to see it when it\'s done',
-        timestamp: new Date(Date.now() - 1000 * 60 * 5),
-        isFromUser: true,
-        status: 'sent',
+        type: 'text',
     },
 
-    // Messages for Sarah Wilson (id: '2')
+    // Messages for Green Grocery Store (id: '2')
     {
         id: '7',
         contactId: '2',
-        content: 'Thanks for the help!',
+        content: 'Welcome to Green Grocery Store! We accept BlinkAid tokens for emergency supplies.',
         timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2),
         isFromUser: false,
         status: 'read',
+        type: 'text',
     },
     {
         id: '8',
         contactId: '2',
-        content: 'No problem at all! Happy to help',
-        timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2 + 1000 * 60 * 5),
-        isFromUser: true,
-        status: 'read',
-    },
-
-    // Messages for Mike Johnson (id: '3')
-    {
-        id: '9',
-        contactId: '3',
-        content: 'See you tomorrow',
-        timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24),
+        content: '500 USDC RECEIVED',
+        timestamp: new Date(Date.now() - 1000 * 60 * 3),
         isFromUser: false,
         status: 'read',
+        type: 'transaction',
+
     },
+
+
+    // Messages for Tech Solutions Inc (id: '3')
     {
         id: '10',
         contactId: '3',
-        content: 'Looking forward to it!',
-        timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24 + 1000 * 60 * 10),
-        isFromUser: true,
+        content: 'Welcome to Tech Solutions Inc! We provide emergency tech support.',
+        timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2),
+        isFromUser: false,
         status: 'read',
+        type: 'text',
     },
     {
         id: '11',
         contactId: '3',
-        content: 'Don\'t forget to bring the documents',
-        timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24 + 1000 * 60 * 15),
+        content: 'We accept BlinkAid tokens for all our services',
+        timestamp: new Date(Date.now() - 1000 * 60 * 60 * 1),
         isFromUser: false,
         status: 'read',
+        type: 'text',
     },
 
-    // Messages for Emily Davis (id: '4')
+    // Messages for Health Center (id: '4')
     {
         id: '12',
         contactId: '4',
-        content: 'Perfect! Let me know when you\'re ready',
-        timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2),
+        content: 'Welcome to Health Center! Emergency medical services available.',
+        timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2),
         isFromUser: false,
         status: 'read',
+        type: 'text',
     },
-
-    // Messages for Alex Chen (id: '5')
     {
         id: '13',
-        contactId: '5',
-        content: 'The meeting is at 3 PM',
-        timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3),
+        contactId: '4',
+        content: '200 USDC RECEIVED',
+        timestamp: new Date(Date.now() - 1000 * 60 * 60 * 1),
         isFromUser: false,
         status: 'read',
+        type: 'transaction',
+        transactionData: {
+            amount: 200,
+            currency: 'USDC',
+            transactionId: 'TXN-4567890123',
+            status: 'completed',
+        },
     },
     {
         id: '14',
-        contactId: '5',
-        content: 'Got it, thanks for the reminder',
-        timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3 + 1000 * 60 * 30),
-        isFromUser: true,
+        contactId: '4',
+        content: 'Your medical supplies are ready for pickup.',
+        timestamp: new Date(Date.now() - 1000 * 60 * 30),
+        isFromUser: false,
         status: 'read',
+        type: 'text',
     },
+
+    // Messages for Emergency Relief (id: '5')
     {
         id: '15',
         contactId: '5',
-        content: 'Can you also prepare the quarterly report?',
-        timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2),
+        content: 'Aid tokens distributed to your wallet',
+        timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24),
         isFromUser: false,
-        status: 'delivered',
+        status: 'read',
+        type: 'text',
     },
     {
         id: '16',
         contactId: '5',
-        content: 'Sure, I\'ll have it ready by tomorrow',
-        timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2 + 1000 * 60 * 45),
-        isFromUser: true,
-        status: 'sent',
+        content: 'You have 1000 USDC available for emergency purchases',
+        timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24 + 1000 * 30),
+        isFromUser: false,
+        status: 'read',
+        type: 'text',
     },
     {
         id: '17',
         contactId: '5',
-        content: 'Great! Also, don\'t forget about the client presentation',
-        timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24),
+        content: 'Stay safe and use your tokens wisely during this emergency',
+        timestamp: new Date(Date.now() - 1000 * 60 * 60 * 12),
         isFromUser: false,
         status: 'read',
+        type: 'text',
     },
 ];
