@@ -71,26 +71,26 @@ class PaymentSessionService {
 
             // Initial balances (USDC with 6 decimals)
             const allocations: PaymentAllocation[] = [
-                // {
-                //     participant: merchantAddress as `0x${string}`,
-                //     asset: 'usdc',
-                //     amount: merchantAmount
-                // },
-                // {
-                //     participant: beneficiaryAddress as `0x${string}`,
-                //     asset: 'usdc',
-                //     amount: beneficiaryAmount
-                // }
                 {
-                    participant: '0x299b4CB6e48423F927560a131A5aEc6b7e13233A',
+                    participant: merchantAddress as `0x${string}`,
                     asset: 'usdc',
-                    amount: '10000000'
+                    amount: merchantAmount
                 },
                 {
-                    participant: '0x3042b367307aB87b1A93D0E7b36261F71CD33C68',
+                    participant: beneficiaryAddress as `0x${string}`,
                     asset: 'usdc',
-                    amount: '20000000'
+                    amount: beneficiaryAmount
                 }
+                // {
+                //     participant: '0x299b4CB6e48423F927560a131A5aEc6b7e13233A',
+                //     asset: 'usdc',
+                //     amount: '10000000'
+                // },
+                // {
+                //     participant: '0x3042b367307aB87b1A93D0E7b36261F71CD33C68',
+                //     asset: 'usdc',
+                //     amount: '20000000'
+                // }
             ];
 
             // Create the payment session
@@ -100,6 +100,7 @@ class PaymentSessionService {
                 status: 'pending',
                 createdAt: new Date().toISOString()
             };
+            console.log(appDefinition, allocations);
 
             // Get user address from wallet service
             const walletStatus = walletService.getStatus();

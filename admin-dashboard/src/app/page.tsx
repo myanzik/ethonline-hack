@@ -7,6 +7,8 @@ import { Users, UserCheck, Network, Plus, TrendingUp, DollarSign } from 'lucide-
 import Link from 'next/link';
 import YellowNetworkDemo from '@/components/YellowNetworkDemo';
 import PaymentSessionsManager from '@/components/PaymentSessionsManager';
+import ChannelManager from '@/components/ChannelManager';
+import ClearNodeTest from '@/components/ClearNodeTest';
 
 export default function DashboardPage() {
   const merchants = getMerchants();
@@ -207,6 +209,16 @@ export default function DashboardPage() {
             </div>
           </CardContent>
         </Card>
+
+        {/* ClearNode Test */}
+        <div className="mt-8">
+          <ClearNodeTest />
+        </div>
+
+        {/* Channel Manager */}
+        <div className="mt-8">
+          <ChannelManager />
+        </div>
 
         {/* Payment Sessions Manager */}
         <div className="mt-8">
