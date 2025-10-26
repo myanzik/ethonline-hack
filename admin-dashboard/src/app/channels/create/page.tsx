@@ -8,7 +8,10 @@ import { Input } from '@/components/ui/Input';
 import { Checkbox } from '@/components/ui/Checkbox';
 import { getMerchants, getBeneficiaries, createChannel } from '@/utils/dataUtils';
 import { CreateChannelData } from '@/types';
-import { Search, Users, UserCheck, Coins, ArrowLeft, Check } from 'lucide-react';
+import { paymentSessionService } from '@/services/paymentSessionService';
+import { walletService } from '@/services/walletService';
+import { yellowNetworkService } from '@/services/yellowNetwork';
+import { Search, Users, UserCheck, Coins, ArrowLeft, Check, Zap, AlertCircle } from 'lucide-react';
 
 export default function CreateChannelPage() {
     const router = useRouter();
@@ -24,6 +27,8 @@ export default function CreateChannelPage() {
     const [beneficiarySearch, setBeneficiarySearch] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
+    const [paymentSessionsCreated, setPaymentSessionsCreated] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
     const merchants = getMerchants();
     const beneficiaries = getBeneficiaries();
@@ -59,19 +64,44 @@ export default function CreateChannelPage() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
+        setError(null);
 
         try {
-            // Simulate API call
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            // Check wallet connection
+            const walletStatus = walletService.getStatus();
+            if (!walletStatus.isConnected) {
+                throw new Error('Please connect your wallet to create payment sessions');
+            }
 
-            createChannel(formData);
+            // Check Yellow Network connection
+            const yellowNetworkStatus = yellowNetworkService.getStatus();
+            if (!yellowNetworkStatus.isConnected) {
+                throw new Error('Yellow Network is not connected. Please wait for connection.');
+            }
+
+            // Create the channel first
+            const channel = createChannel(formData);
+
+            // Create payment sessions in Yellow Network
+            console.log('Creating payment sessions for channel:', channel.id);
+            const sessions = await paymentSessionService.createChannelPaymentSession(
+                channel.id,
+                formData.merchantIds,
+                formData.beneficiaryIds,
+                formData.totalTokens
+            );
+
+            setPaymentSessionsCreated(true);
             setShowSuccess(true);
+
+            console.log(`✅ Created ${sessions.length} payment sessions for channel ${channel.id}`);
 
             setTimeout(() => {
                 router.push('/channels');
-            }, 2000);
-        } catch (error) {
+            }, 3000);
+        } catch (error: any) {
             console.error('Error creating channel:', error);
+            setError(error.message || 'Failed to create channel and payment sessions');
         } finally {
             setIsSubmitting(false);
         }
@@ -91,9 +121,15 @@ export default function CreateChannelPage() {
                                 <Check className="h-6 w-6 text-green-600" />
                             </div>
                             <h3 className="text-lg font-medium text-gray-900 mb-2">Channel Created Successfully!</h3>
-                            <p className="text-sm text-gray-600">
-                                Your channel "{formData.name}" has been created and tokens have been distributed.
+                            <p className="text-sm text-gray-600 mb-4">
+                                Your channel "{formData.name}" has been created and payment sessions have been established.
                             </p>
+                            {paymentSessionsCreated && (
+                                <div className="flex items-center justify-center text-green-600 text-sm">
+                                    <Zap className="w-4 h-4 mr-2" />
+                                    Payment sessions created in Yellow Network
+                                </div>
+                            )}
                         </div>
                     </CardContent>
                 </Card>
@@ -114,8 +150,48 @@ export default function CreateChannelPage() {
                         Back
                     </Button>
                     <h1 className="text-3xl font-bold text-gray-900">Create New Channel</h1>
-                    <p className="mt-2 text-gray-600">Create a new distribution channel and distribute tokens to beneficiaries</p>
+                    <p className="mt-2 text-gray-600">Create a new distribution channel and establish payment sessions in Yellow Network</p>
                 </div>
+
+                {/* Connection Status */}
+                <Card className="mb-6">
+                    <CardContent className="pt-6">
+                        <div className="flex items-center justify-between">
+                            <div className="flex items-center space-x-4">
+                                <div className="flex items-center space-x-2">
+                                    <div className={`w-3 h-3 rounded-full ${walletService.getStatus().isConnected ? 'bg-green-500' : 'bg-red-500'}`}></div>
+                                    <span className="text-sm font-medium">
+                                        Wallet: {walletService.getStatus().isConnected ? 'Connected' : 'Not Connected'}
+                                    </span>
+                                </div>
+                                <div className="flex items-center space-x-2">
+                                    <div className={`w-3 h-3 rounded-full ${yellowNetworkService.getStatus().isConnected ? 'bg-green-500' : 'bg-red-500'}`}></div>
+                                    <span className="text-sm font-medium">
+                                        Yellow Network: {yellowNetworkService.getStatus().isConnected ? 'Connected' : 'Not Connected'}
+                                    </span>
+                                </div>
+                            </div>
+                            {(!walletService.getStatus().isConnected || !yellowNetworkService.getStatus().isConnected) && (
+                                <div className="flex items-center text-amber-600 text-sm">
+                                    <AlertCircle className="w-4 h-4 mr-1" />
+                                    Both connections required
+                                </div>
+                            )}
+                        </div>
+                    </CardContent>
+                </Card>
+
+                {/* Error Display */}
+                {error && (
+                    <Card className="mb-6 border-red-200 bg-red-50">
+                        <CardContent className="pt-6">
+                            <div className="flex items-center text-red-600">
+                                <AlertCircle className="w-5 h-5 mr-2" />
+                                <span className="font-medium">Error: {error}</span>
+                            </div>
+                        </CardContent>
+                    </Card>
+                )}
 
                 <form onSubmit={handleSubmit} className="space-y-8">
                     {/* Basic Information */}
@@ -175,8 +251,8 @@ export default function CreateChannelPage() {
                                     <div
                                         key={merchant.id}
                                         className={`p-3 border rounded-lg cursor-pointer transition-colors ${formData.merchantIds.includes(merchant.id)
-                                                ? 'border-blue-500 bg-blue-50'
-                                                : 'border-gray-200 hover:border-gray-300'
+                                            ? 'border-blue-500 bg-blue-50'
+                                            : 'border-gray-200 hover:border-gray-300'
                                             }`}
                                         onClick={() => handleMerchantToggle(merchant.id)}
                                     >
@@ -222,8 +298,8 @@ export default function CreateChannelPage() {
                                     <div
                                         key={beneficiary.id}
                                         className={`p-3 border rounded-lg cursor-pointer transition-colors ${formData.beneficiaryIds.includes(beneficiary.id)
-                                                ? 'border-blue-500 bg-blue-50'
-                                                : 'border-gray-200 hover:border-gray-300'
+                                            ? 'border-blue-500 bg-blue-50'
+                                            : 'border-gray-200 hover:border-gray-300'
                                             }`}
                                         onClick={() => handleBeneficiaryToggle(beneficiary.id)}
                                     >
@@ -296,9 +372,16 @@ export default function CreateChannelPage() {
                         </Button>
                         <Button
                             type="submit"
-                            disabled={isSubmitting || formData.merchantIds.length === 0 || formData.beneficiaryIds.length === 0 || formData.totalTokens <= 0}
+                            disabled={
+                                isSubmitting ||
+                                formData.merchantIds.length === 0 ||
+                                formData.beneficiaryIds.length === 0 ||
+                                formData.totalTokens <= 0 ||
+                                !walletService.getStatus().isConnected ||
+                                !yellowNetworkService.getStatus().isConnected
+                            }
                         >
-                            {isSubmitting ? 'Creating Channel...' : 'Create Channel'}
+                            {isSubmitting ? 'Creating Channel & Payment Sessions...' : 'Create Channel & Payment Sessions'}
                         </Button>
                     </div>
                 </form>

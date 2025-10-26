@@ -6,6 +6,7 @@ import { getMerchants, getBeneficiaries, getChannels } from '@/utils/dataUtils';
 import { Users, UserCheck, Network, Plus, TrendingUp, DollarSign } from 'lucide-react';
 import Link from 'next/link';
 import YellowNetworkDemo from '@/components/YellowNetworkDemo';
+import PaymentSessionsManager from '@/components/PaymentSessionsManager';
 
 export default function DashboardPage() {
   const merchants = getMerchants();
@@ -206,6 +207,11 @@ export default function DashboardPage() {
             </div>
           </CardContent>
         </Card>
+
+        {/* Payment Sessions Manager */}
+        <div className="mt-8">
+          <PaymentSessionsManager />
+        </div>
 
       </div>
     </div>

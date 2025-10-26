@@ -1,4 +1,6 @@
 import { walletService } from './walletService';
+import { parseAnyRPCResponse} from '@erc7824/nitrolite'
+
 
 export interface YellowNetworkMessage {
     id?: string;
@@ -52,7 +54,10 @@ class YellowNetworkService {
 
             this.ws.onmessage = (event) => {
                 try {
+                    const parsedMessage = parseAnyRPCResponse(event.data);
+                    console.log('parsed Received:', parsedMessage);
                     const message = JSON.parse(event.data);
+                    // console.log(message.res[2])
                     console.log('📨 Received:', message);
 
                     this.updateStatus({ lastMessage: message });
@@ -135,6 +140,7 @@ class YellowNetworkService {
     public sendMessage(message: unknown) {
         if (this.ws?.readyState === WebSocket.OPEN) {
             this.ws.send(JSON.stringify(message));
+            console.log('📤 Sent message to create channel', message);
         } else {
             console.warn('WebSocket is not connected. Cannot send message.');
         }
